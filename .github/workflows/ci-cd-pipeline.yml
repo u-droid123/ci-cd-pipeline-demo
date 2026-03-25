@@ -22,16 +22,56 @@ jobs:
           node-version: '18'
       
       - name: 📦 Install dependencies
-        run: npm install
-      
-      - name: 🧪 Run automated tests
-        run: npm test
-      
-      - name: 📊 Display test results
-        if: always()
         run: |
-          echo "✅ Test execution completed"
-          echo "📝 Check the test output above for details"
+          if [ -f package.json ]; then
+            npm install
+            echo "✅ Dependencies installed"
+          else
+            echo "⚠️ No package.json found"
+          fi
+      
+      - name: 🧪 Run tests
+        run: |
+          echo "🔍 Running CI/CD Pipeline Tests..."
+          echo ""
+          
+          # Test 1: Check if index.html exists
+          if [ -f index.html ]; then
+            echo "✅ Test 1 PASSED: index.html exists"
+          else
+            echo "❌ Test 1 FAILED: index.html not found"
+            exit 1
+          fi
+          
+          # Test 2: Check for DOCTYPE
+          if grep -q "<!DOCTYPE html>" index.html; then
+            echo "✅ Test 2 PASSED: DOCTYPE found"
+          else
+            echo "❌ Test 2 FAILED: DOCTYPE missing"
+            exit 1
+          fi
+          
+          # Test 3: Check for title
+          if grep -q "<title>" index.html; then
+            echo "✅ Test 3 PASSED: Title found"
+          else
+            echo "❌ Test 3 FAILED: Title missing"
+            exit 1
+          fi
+          
+          # Test 4: Check for Hello DevOps content
+          if grep -q "Hello, DevOps!" index.html; then
+            echo "✅ Test 4 PASSED: Content found"
+          else
+            echo "❌ Test 4 FAILED: Content missing"
+            exit 1
+          fi
+          
+          echo ""
+          echo "🎉🎉🎉 ALL TESTS PASSED! 🎉🎉🎉"
+      
+      - name: 📊 Test Summary
+        run: echo "✅ Continuous Integration completed successfully!"
   
   # CD JOB: Deploy to GitHub Pages
   deploy:
@@ -57,5 +97,5 @@ jobs:
       
       - name: 📢 Deployment complete
         run: |
-          echo "✅ Deployment completed successfully!"
-          echo "🌐 Your site: https://u-droid123.github.io/${{ github.event.repository.name }}/"
+          echo "✅✅✅ Deployment completed successfully! ✅✅✅"
+          echo "🌐 Your site is live at: https://u-droid123.github.io/${{ github.event.repository.name }}/"

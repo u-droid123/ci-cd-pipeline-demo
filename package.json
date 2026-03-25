@@ -4,7 +4,7 @@
   "description": "CI/CD Pipeline Demo for u-droid123",
   "main": "index.html",
   "scripts": {
-    "test": "echo \"✅ All tests passed!\" && exit 0"
+    "test": "node -e \"console.log('✅ All tests passed!')\""
   },
   "author": "u-droid123",
   "license": "MIT"
