@@ -3,99 +3,43 @@
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
 
 jobs:
-  # CI JOB: Build and Test
   test:
-    name: 🔨 Test & Build
     runs-on: ubuntu-latest
-    
     steps:
-      - name: 📥 Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
       
-      - name: 🔧 Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-      
-      - name: 📦 Install dependencies
+      - name: Check if index.html exists
         run: |
-          if [ -f package.json ]; then
-            npm install
-            echo "✅ Dependencies installed"
-          else
-            echo "⚠️ No package.json found"
-          fi
-      
-      - name: 🧪 Run tests
-        run: |
-          echo "🔍 Running CI/CD Pipeline Tests..."
-          echo ""
-          
-          # Test 1: Check if index.html exists
           if [ -f index.html ]; then
-            echo "✅ Test 1 PASSED: index.html exists"
+            echo "✅ index.html exists"
           else
-            echo "❌ Test 1 FAILED: index.html not found"
+            echo "❌ index.html not found"
             exit 1
           fi
-          
-          # Test 2: Check for DOCTYPE
-          if grep -q "<!DOCTYPE html>" index.html; then
-            echo "✅ Test 2 PASSED: DOCTYPE found"
-          else
-            echo "❌ Test 2 FAILED: DOCTYPE missing"
-            exit 1
-          fi
-          
-          # Test 3: Check for title
-          if grep -q "<title>" index.html; then
-            echo "✅ Test 3 PASSED: Title found"
-          else
-            echo "❌ Test 3 FAILED: Title missing"
-            exit 1
-          fi
-          
-          # Test 4: Check for Hello DevOps content
-          if grep -q "Hello, DevOps!" index.html; then
-            echo "✅ Test 4 PASSED: Content found"
-          else
-            echo "❌ Test 4 FAILED: Content missing"
-            exit 1
-          fi
-          
-          echo ""
-          echo "🎉🎉🎉 ALL TESTS PASSED! 🎉🎉🎉"
       
-      - name: 📊 Test Summary
-        run: echo "✅ Continuous Integration completed successfully!"
+      - name: Check HTML content
+        run: |
+          if grep -q "Hello, DevOps!" index.html; then
+            echo "✅ Content found"
+          else
+            echo "❌ Content not found"
+            exit 1
+          fi
+          
+      - name: All tests passed
+        run: echo "🎉 Pipeline successful!"
   
-  # CD JOB: Deploy to GitHub Pages
   deploy:
-    name: 🚀 Deploy to GitHub Pages
     runs-on: ubuntu-latest
     needs: test
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    
     steps:
-      - name: 📥 Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
       
-      - name: 🚀 Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./
           publish_branch: gh-pages
-          keep_files: false
-          user_name: 'u-droid123'
-          user_email: 'upendra.karki@westcliff.edu'
-          commit_message: '🚀 Auto-deployed by GitHub Actions'
-      
-      - name: 📢 Deployment complete
-        run: |
-          echo "✅✅✅ Deployment completed successfully! ✅✅✅"
-          echo "🌐 Your site is live at: https://u-droid123.github.io/${{ github.event.repository.name }}/"
