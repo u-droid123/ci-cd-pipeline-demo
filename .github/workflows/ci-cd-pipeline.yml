@@ -3,39 +3,49 @@
 on:
   push:
     branches: [ main ]
+  workflow_dispatch:
 
 jobs:
+  # Test Job
   test:
+    name: Test Application
     runs-on: ubuntu-latest
+    
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
       
-      - name: Check if index.html exists
+      - name: Verify index.html exists
         run: |
           if [ -f index.html ]; then
-            echo "✅ index.html exists"
+            echo "✅ index.html found"
           else
             echo "❌ index.html not found"
             exit 1
           fi
       
-      - name: Check HTML content
+      - name: Verify HTML content
         run: |
           if grep -q "Hello, DevOps!" index.html; then
-            echo "✅ Content found"
+            echo "✅ Content verified"
           else
             echo "❌ Content not found"
             exit 1
           fi
-          
-      - name: All tests passed
-        run: echo "🎉 Pipeline successful!"
+      
+      - name: Test passed
+        run: echo "🎉 All tests passed!"
   
+  # Deploy Job
   deploy:
+    name: Deploy to GitHub Pages
     runs-on: ubuntu-latest
     needs: test
+    if: github.ref == 'refs/heads/main'
+    
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
       
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
@@ -43,3 +53,10 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./
           publish_branch: gh-pages
+          user_name: 'u-droid123'
+          user_email: 'karkiupen48@gmail.com'
+      
+      - name: Show deployment URL
+        run: |
+          echo "✅ Deployment complete!"
+          echo "🌐 Site: https://u-droid123.github.io/ci-cd-pipeline-demo/"

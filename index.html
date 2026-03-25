@@ -3,66 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CI/CD Pipeline Test - u-droid123</title>
+    <title>CI/CD Pipeline Demo</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 50px auto;
             text-align: center;
+            padding: 50px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 20px;
         }
         .container {
             background: rgba(255,255,255,0.1);
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            padding: 30px;
+            max-width: 600px;
+            margin: auto;
         }
-        h1 {
-            font-size: 3em;
-            margin-bottom: 20px;
-        }
-        .status {
-            background: #4caf50;
-            display: inline-block;
-            padding: 10px 20px;
-            border-radius: 5px;
-            margin-top: 20px;
-        }
-        .timestamp {
-            margin-top: 30px;
-            font-size: 0.9em;
-            opacity: 0.8;
-        }
-        .badge {
-            background: #ff6b6b;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 0.8em;
-            display: inline-block;
-            margin-bottom: 20px;
-        }
+        h1 { color: #fff; }
+        .status { color: #4caf50; font-weight: bold; }
+        .user { color: #ffd700; }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="badge">🚀 CI/CD PIPELINE</div>
-        <h1>Hello, DevOps!</h1>
-        <p>This application was deployed using GitHub Actions CI/CD Pipeline</p>
-        <p><strong>User:</strong> u-droid123</p>
-        <div class="status">
-            ✅ DEPLOYMENT SUCCESSFUL
-        </div>
-        <div class="timestamp" id="timestamp">
-            Loading deployment time...
-        </div>
+        <h1>🚀 CI/CD Pipeline Success!</h1>
+        <p>This application was deployed using <strong>GitHub Actions</strong></p>
+        <p>User: <span class="user">u-droid123</span></p>
+        <p class="status">✅ DEPLOYMENT STATUS: SUCCESSFUL</p>
+        <p id="timestamp"></p>
     </div>
-    
     <script>
-        const now = new Date();
-        document.getElementById('timestamp').innerHTML = 'Deployed: ' + now.toLocaleString();
+        document.getElementById('timestamp').innerHTML = 'Deployed: ' + new Date().toLocaleString();
     </script>
 </body>
 </html>
